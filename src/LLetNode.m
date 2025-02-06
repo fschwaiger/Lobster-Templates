@@ -20,7 +20,7 @@ classdef LLetNode < LNode
         
         function str = render(self, context)
             lhs = extractBefore(self.Expression, "=");
-            lhs = regexprep(lhs, "(\w[\w\d.(){}]*)", "context.$1");
+            lhs = regexprep(lhs, "(^|(?<![.)}:])\<)([a-zA-Z][\w\d.(){}]*)", "context.$2");
             rhs = extractAfter(self.Expression, "="); %#ok<NASGU> 
             eval(lhs + " = evalin_struct(rhs, context, self.Fragment);");
             str = self.render_children(context);
