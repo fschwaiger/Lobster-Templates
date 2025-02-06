@@ -18,7 +18,7 @@ function varargout = evalin_struct(expression, context, fragment)
         end
         compiled = string(regexp(expression, "(?<![.""'])\<([a-zA-Z]\w*)\>", "match"));
         compiled = reshape(string(intersect(compiled, fieldnames(context))), 1, []);
-        compiled = "@(c)" + regexprep(expression, "(?<![.""'])\<(" + strjoin(compiled, "|") + ")\>", "c.$1");
+        compiled = "@(c__)" + regexprep(expression, "(?<![.""'])\<(" + strjoin(compiled, "|") + ")\>", "c__.$1");
         compiled = str2func(compiled);
         cache(expression) = compiled;
     end
