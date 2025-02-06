@@ -1,4 +1,4 @@
-function varargout = evalin_struct(expression, context)
+function varargout = evalin_struct(expression, context, fragment)
     %EVALIN_STRUCT Evaluates an expression in a (struct) context.
     %
     % This function relies heavily on expression caching and the cache has no
@@ -26,7 +26,12 @@ function varargout = evalin_struct(expression, context)
     try
         [varargout{1:nargout}] = compiled(context);
     catch ME
-        error(ME.identifier, "Expression '%s' failed in context %s.\n\n%s", expression, ...
-            jsonencode(fieldnames(context)), ME.message);
+        variablesUsed = string(regexp(expression, "(?<![.""'])\<([a-zA-Z]\w*)\>", "match"));
+        variablesUsed = reshape(string(intersect(variablesUsed, fieldnames(context))), 1, []);
+        variableValues = arrayfun(@(v) context.(v), variablesUsed, "UniformOutput", false);
+        context = cell2struct(variableValues, variablesUsed, 2);
+        
+        error(ME.identifier, "Expression '%s' failed.\n\n  file: %s\n  line: %d\n  func: %s\n  what: %s\n  vars: %s\n\n", expression, ...
+            fragment.File, fragment.Line, func2str(compiled), ME.message, jsonencode(context, PrettyPrint = false));
     end
 end

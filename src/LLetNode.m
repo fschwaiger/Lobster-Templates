@@ -13,15 +13,16 @@ classdef LLetNode < LNode
     
     methods
         function self = LLetNode(fragment)
+            self@LNode(fragment);
             self.CreatesScope = true;
-            self.Expression = fragment;
+            self.Expression = fragment.Text;
         end
         
         function str = render(self, context)
             lhs = extractBefore(self.Expression, "=");
             lhs = regexprep(lhs, "(\w[\w\d.(){}]*)", "context.$1");
             rhs = extractAfter(self.Expression, "="); %#ok<NASGU> 
-            eval(lhs + " = evalin_struct(rhs, context);");
+            eval(lhs + " = evalin_struct(rhs, context, self.Fragment);");
             str = self.render_children(context);
         end
     end

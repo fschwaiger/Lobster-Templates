@@ -12,7 +12,8 @@ classdef LIncludeNode < LNode
     
     methods
         function self = LIncludeNode(fragment)
-            self.Expression = fragment;
+            self@LNode(fragment);
+            self.Expression = fragment.Text;
         end
         
         function str = render(self, context)

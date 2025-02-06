@@ -12,11 +12,12 @@ classdef LErrorNode < LNode
     
     methods
         function self = LErrorNode(fragment)
-            self.Expression = "error(" + fragment + ")";
+            self@LNode(fragment);
+            self.Expression = "error(" + fragment.Text + ")";
         end
         
         function str = render(self, context)
-            evalin_struct(self.Expression, context);
+            evalin_struct(self.Expression, context, self.Fragment);
             str = "";
         end
     end

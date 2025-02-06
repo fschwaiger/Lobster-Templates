@@ -88,7 +88,7 @@ function template = LFileTemplate(filename, searchPath, verbose)
         end
         
         try
-            template = LTemplate(fileread(filename));
+            template = LTemplate(fileread(filename), filename);
         catch reason
             error("Lobster:FileCompilationError", ...
                 "Error while compiling template file %s: %s %s", ...
