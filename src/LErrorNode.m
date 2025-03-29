@@ -4,7 +4,7 @@ classdef LErrorNode < LNode
     %    {% error "message" %}
     %    {% error "identifier", "message" %}
     %
-    % See also LAssertNode, LNode
+    % See also LAssertNode, LWarningNode, LNode
     
     properties
         Expression (1,1) string
