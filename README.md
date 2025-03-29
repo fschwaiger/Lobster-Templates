@@ -173,3 +173,11 @@ the block will be removed:
     {%- else -%}
         Content without leading or trailing whitespace
     {%- end %}
+
+## How to Run the Tests
+
+Run the following in the lobster library folder:
+
+```matlab
+runtests test/
+```
